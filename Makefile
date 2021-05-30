@@ -6,7 +6,7 @@ ARCHDIR=arch/$(ARCH)
 OS_NAME=azathos
 
 CC=$(HOST)-g++
-AS=$(HOST)-as
+AS=nasm
 
 CPPFLAGS=-ffreestanding -O2 -g -Wall -Wextra -fno-exceptions -fno-rtti -std=c++20 -Iinclude
 
@@ -40,11 +40,11 @@ $(ISO_FILE): $(KERNEL_FILE)
 $(KERNEL_FILE): $(OBJS)
 	$(CC) -T linker.ld -o $(KERNEL_FILE) -ffreestanding -O2 -nostdlib $(OBJS) -lgcc
 
-.cpp.o:
+%.o: %.cpp
 	$(CC) -c $< -o $@ $(CPPFLAGS)
 
-.s.o:
-	$(AS) -c $< -o $@
+%.o: %.s
+	$(AS) -felf32 $< -o $@
 
 run: $(ISO_FILE)
 	$(QEMU)
