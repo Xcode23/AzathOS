@@ -3,7 +3,9 @@
 
 #include "tty.hpp"
 
-bool is_protected(){
+extern "C" void kernel_main(void);
+
+static bool is_protected(){
 	uint16_t status = 0;
 	__asm__("smsw %0"
 			:"=r"(status)
@@ -12,7 +14,7 @@ bool is_protected(){
 	return status & 1;
 }
  
-extern "C" void kernel_main(void){
+void kernel_main(void){
 	terminal_initialize();
 	terminal_writestring("Hello, kernel World!\n");
 
