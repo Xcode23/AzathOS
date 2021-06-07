@@ -27,10 +27,10 @@ QEMU=$(QEMU_COMMAND) $(QEMU_FLAGS)
 CRTBEGIN_OBJ:=$(shell $(CC) -print-file-name=crtbegin.o)
 CRTEND_OBJ:=$(shell $(CC) -print-file-name=crtend.o)
 
-KERNEL_ARCH_OBJS=$(ARCHDIR)/boot.o \
-$(ARCHDIR)/tty.o
-KERNEL_OBJS=$(KERNEL_ARCH_OBJS) \
-kernel.o
+SRCFILES := $(shell find . -type f -name "*.cpp")
+OBJFILES := $(patsubst %.cpp,%.o,$(SRCFILES))
+
+KERNEL_OBJS=$(ARCHDIR)/boot.o $(OBJFILES)
 OBJS=$(ARCHDIR)/crti.o \
 $(KERNEL_OBJS) \
 $(ARCHDIR)/crtn.o
