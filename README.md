@@ -9,5 +9,7 @@ Hobby kernel made to learn how OS kernels are implemented.
 * Klib data-structures: string, map, vector...
 * Memory management
 * Process management
+* Filesystem
+* Uefi support
 * x86_64 support
 * Arm support
