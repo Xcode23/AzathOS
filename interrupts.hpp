@@ -1,48 +1,5 @@
 #pragma once
 
-#include <stdint.h>
-
-/**
- * struct for registers saved in stack in assembly
- * used as a padding parameter to access the 
- * relevant data deeper in the stack 
-**/
-struct Registers { 
-	uint32_t eax;
-	uint32_t ecx;
-	uint32_t edx;
-	uint32_t ebx;
-	uint32_t esp;
-	uint32_t ebp;
-	uint32_t esi;
-	uint32_t edi;
-} __attribute__((packed));
-
-/**
- * struct for registers saved in stack in assembly
- * used as a padding parameter to access the 
- * relevant data deeper in the stack. 
-**/
-struct InterruptData { //TODO: add parameters for interrupt handlers
-	uint32_t error_code; 
-    uint32_t eip;
-    uint32_t cs;
-    uint32_t eflags;
-} __attribute__((packed));
-
-struct IDTEntry {
-    uint16_t segment_offset_1; // segment offset bits 0..15
-    uint16_t selector; // a code segment selector in GDT
-    uint8_t zero;      // unused, set to 0
-    uint8_t type_attr; // type and attributes, see below
-    uint16_t segment_offset_2; // segment offset bits 16..31
-} __attribute__((packed));
-
-struct IDTDescriptor {
-	uint16_t size;
-	uint32_t address;
-} __attribute__((packed));
-
 void setup_idt(void);
 void load_idt(void);
 void test_idt(void);

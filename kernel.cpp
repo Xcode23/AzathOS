@@ -5,12 +5,10 @@
 #include "interrupts.hpp"
 #include "PIC.hpp"
 #include "kernel.hpp"
+#include "GDT.hpp"
 
 extern "C" void kernel_main(void);
 static bool is_protected();
-
-
-int counter;
 
 static bool is_protected(){
 	uint16_t status = 0;
@@ -22,7 +20,9 @@ static bool is_protected(){
 }
  
 void kernel_main(void){
-	counter = 0;
+	int counter = 0;
+	gdt::setup_gdt();
+	gdt::load_gdt();
 	terminal_initialize();
 	terminal_writestring("Hello, kernel World!\n");
 
