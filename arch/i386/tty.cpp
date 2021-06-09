@@ -6,6 +6,7 @@
 #include <tty.hpp>
 
 #include "vga.hpp"
+#include "IO.hpp"
 
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
@@ -17,8 +18,12 @@ static uint8_t terminal_color;
 static uint16_t* terminal_buffer;
 
 void scroll();
+void enable_cursor(uint8_t cursor_start, uint8_t cursor_end);
+void disable_cursor();
+void update_cursor(size_t x, size_t y);
 
 void terminal_initialize(void) {
+	enable_cursor(0, 15);
 	terminal_row = 0;
 	terminal_column = 0;
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
@@ -74,6 +79,7 @@ size_t strlen(const char* str) noexcept(true) {
 
 void terminal_writestring(const char* data) {
 	terminal_write(data, strlen(data));
+	update_cursor(terminal_column, terminal_row);
 }
 
 void scroll() {
@@ -89,4 +95,26 @@ void scroll() {
 		const size_t index = (VGA_HEIGHT - 1) * VGA_WIDTH + x;
 		terminal_buffer[index] = vga_entry(' ', vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK));;
 	}
+}
+
+void enable_cursor(uint8_t cursor_start, uint8_t cursor_end) {
+	outb(0x3D4, 0x0A);
+	outb(0x3D5, (inb(0x3D5) & 0xC0) | cursor_start);
+ 
+	outb(0x3D4, 0x0B);
+	outb(0x3D5, (inb(0x3D5) & 0xE0) | cursor_end);
+}
+
+void disable_cursor() {
+	outb(0x3D4, 0x0A);
+	outb(0x3D5, 0x20);
+}
+
+void update_cursor(size_t x, size_t y) {
+	uint16_t pos = y * VGA_WIDTH + x;
+ 
+	outb(0x3D4, 0x0F);
+	outb(0x3D5, static_cast<uint8_t>(pos & 0xFF));
+	outb(0x3D4, 0x0E);
+	outb(0x3D5, static_cast<uint8_t>((pos >> 8) & 0xFF));
 }
