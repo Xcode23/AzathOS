@@ -21,6 +21,9 @@ void scroll();
 void enable_cursor(uint8_t cursor_start, uint8_t cursor_end);
 void disable_cursor();
 void update_cursor(size_t x, size_t y);
+void terminal_putchar(char c);
+void terminal_write(const char* data, size_t size);
+void terminal_writestring(const char* data);
 
 void terminal_initialize(void) {
 	enable_cursor(0, 15);
@@ -117,4 +120,8 @@ void update_cursor(size_t x, size_t y) {
 	outb(0x3D5, static_cast<uint8_t>(pos & 0xFF));
 	outb(0x3D4, 0x0E);
 	outb(0x3D5, static_cast<uint8_t>((pos >> 8) & 0xFF));
+}
+
+void prints(const char* data) {
+	terminal_writestring(data);
 }

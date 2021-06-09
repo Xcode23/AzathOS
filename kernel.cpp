@@ -24,12 +24,12 @@ void kernel_main(void){
 	gdt::setup_gdt();
 	gdt::load_gdt();
 	terminal_initialize();
-	terminal_writestring("Hello, kernel World!\n");
+	prints("Hello, kernel World!\n");
 
 	if (is_protected())
-		terminal_writestring("The Kernel is in Protected Mode\n");
+		prints("The Kernel is in Protected Mode\n");
 	else
-		terminal_writestring("The Kernel is in Real Mode\n");
+		prints("The Kernel is in Real Mode\n");
 	setup_idt();
 	load_idt();
 	pic_init();
@@ -55,6 +55,6 @@ void itoa (unsigned int number, char* str) {
 }
 
 void panic() { //TODO: improve panic
-	terminal_writestring("PANIC");
+	prints("PANIC");
 	asm volatile("cli; hlt");
 }

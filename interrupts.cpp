@@ -4,6 +4,8 @@
 #include "tty.hpp"
 #include "kernel.hpp"
 #include "IO.hpp"
+#include "keyboard.hpp"
+#include "PIC.hpp"
 
 const uint16_t IDT_SIZE = 256;
 
@@ -54,12 +56,10 @@ IDTDescriptor idt_descriptor = {sizeof(IDTEntry) * IDT_SIZE - 1, reinterpret_cas
 
 extern "C" void generic_interrupt_handler(Registers regs, uint32_t intr_num, InterruptData intrd);
 void setup_isr(uint8_t intr_num, uintptr_t handler);
-void pic_send_eoi(uint8_t irq);
 void stub_isr(uint32_t intr_num);
 void exception_handler(uint32_t intr_num, uint32_t error_code);
 void hardware_irq_handler(uint32_t intr_num);
 void timer_irq_handler();
-void keyboard_irq_handler();
 
 
 void generic_interrupt_handler(Registers regs, uint32_t intr_num, InterruptData intrd){
@@ -81,43 +81,34 @@ void generic_interrupt_handler(Registers regs, uint32_t intr_num, InterruptData 
 void stub_isr(uint32_t intr_num) {
 	char str[256];
 	itoa(intr_num, str);
-	terminal_writestring(str);
-	terminal_writestring("\n");
+	prints(str);
+	prints("\n");
 }
 
 void exception_handler(uint32_t intr_num, uint32_t error_code) {
 	char str[256];
 	itoa(intr_num, str);
-	terminal_writestring(str);
+	prints(str);
 	if (error_code != 0) {
 		char str2[256];
 		itoa(error_code, str2);
-		terminal_writestring("   ");
-		terminal_writestring(str2);
+		prints("   ");
+		prints(str2);
 	}
-	terminal_writestring("\n");
+	prints("\n");
 	panic();
 }
 
 void hardware_irq_handler(uint32_t intr_num) {
 	char str[256];
 	itoa(intr_num, str);
-	terminal_writestring(str);
-	terminal_writestring("\n");
+	prints(str);
+	prints("\n");
 	pic_send_eoi(intr_num-32);
 }
 
 void timer_irq_handler() {
 	pic_send_eoi(0);
-}
-
-void keyboard_irq_handler() {
-	auto scan_code = inb(0x60);
-	char str[256];
-	itoa(scan_code, str);
-	terminal_writestring(str);
-	terminal_writestring("\n");
-	pic_send_eoi(1);
 }
 
 void setup_idt(void) {
