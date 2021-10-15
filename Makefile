@@ -9,7 +9,7 @@ CC=$(HOST)-g++
 AS=nasm
 
 CPPFLAGS=-ffreestanding -O2 -g -fno-exceptions -fno-rtti -std=c++20 -Iinclude $(WFLAGS)
-WFLAGS=-pedantic -Wall -Wextra -Wcast-align \
+WFLAGS= -Wall -Wextra -Wcast-align \
 -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization \
 -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations \
 -Wmissing-include-dirs -Wnoexcept -Wold-style-cast \

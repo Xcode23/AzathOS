@@ -70,7 +70,7 @@ void generic_interrupt_handler(Registers regs, uint32_t intr_num, InterruptData 
 		timer_irq_handler();
 	} else if (intr_num == 33) {
 		keyboard_irq_handler();
-	} else if (intr_num >= 34 && intr_num <= 48) {
+	} else if (intr_num >= 34 && intr_num <= 47) {//PIC has 16 interrupts for hardware from 32-47
 		hardware_irq_handler(intr_num);
 	} else {
 		stub_isr(intr_num);

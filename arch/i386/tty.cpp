@@ -1,12 +1,12 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <string.h>
 
 #include <tty.hpp>
+#include <IO.hpp>
+#include <string.hpp>
 
 #include "vga.hpp"
-#include "IO.hpp"
 
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
@@ -71,13 +71,6 @@ void terminal_putchar(char c) {
 void terminal_write(const char* data, size_t size) {
 	for (size_t i = 0; i < size; i++)
 		terminal_putchar(data[i]);
-}
-
-size_t strlen(const char* str) noexcept(true) {
-	size_t len = 0;
-	while (str[len])
-		len++;
-	return len;
 }
 
 void terminal_writestring(const char* data) {

@@ -39,21 +39,6 @@ void kernel_main(void){
 	while(1);
 }
 
-void itoa (unsigned int number, char* str) {
-	unsigned int temp[256];
-	int i = 0;
-	while (number > 10) {
-		temp[i++] = number % 10;
-		number = number / 10;
-	}
-	temp[i] = number % 10;
-	int j = 0;
-	while (i >= 0) {
-		str[j++]='0' + temp[i--];
-	}
-	str[j]=0;
-}
-
 void panic() { //TODO: improve panic
 	prints("PANIC");
 	asm volatile("cli; hlt");
