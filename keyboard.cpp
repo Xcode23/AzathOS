@@ -9,7 +9,7 @@
 */
 
 char scan_code_to_event(uint8_t scan_code);
-char upcase(char c);
+char inline upcase(char c);
 
 static bool shift = false;
 static bool caps_lock = false;
@@ -84,7 +84,7 @@ char scan_code_to_event(uint8_t scan_code) {
 	return result;
 }
 
-char upcase(char c) {
+char inline upcase(char c) {
 	if((caps_lock && !shift) || (!caps_lock && shift))
 		c = c - 'a' + 'A';
 	return c;

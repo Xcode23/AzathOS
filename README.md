@@ -4,10 +4,12 @@ Hobby kernel made to learn how OS kernels are implemented.
 
 ## TODO
 
-* Keyboard Input
-* Serial Output
-* Klib data-structures: string, map, vector...
+* Framebuffer based Text UI :heavy_check_mark:
+* Keyboard Input :heavy_check_mark:
+* Paging
 * Memory management
+* Klib data-structures: string, map, vector...
+* Serial Output Logging
 * Process management
 * Filesystem
 * Uefi support

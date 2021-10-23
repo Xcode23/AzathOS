@@ -6,6 +6,7 @@
 #include "PIC.hpp"
 #include "kernel.hpp"
 #include "GDT.hpp"
+#include "string.hpp"
 
 extern "C" void kernel_main(void);
 static bool is_protected();

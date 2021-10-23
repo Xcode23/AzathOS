@@ -6,6 +6,7 @@
 #include "IO.hpp"
 #include "keyboard.hpp"
 #include "PIC.hpp"
+#include "string.hpp"
 
 const uint16_t IDT_SIZE = 256;
 
@@ -111,7 +112,7 @@ void timer_irq_handler() {
 	pic_send_eoi(0);
 }
 
-void setup_idt(void) {
+void setup_idt() {
 	setup_isr(0, reinterpret_cast<uintptr_t>(interrupt_handler_0));
 	setup_isr(1, reinterpret_cast<uintptr_t>(interrupt_handler_1));
 	setup_isr(2, reinterpret_cast<uintptr_t>(interrupt_handler_2));
@@ -378,11 +379,11 @@ void setup_isr(uint8_t intr_num, uintptr_t handler) {
 	idt[intr_num].type_attr = 0b10001111; //TODO: improve
 }
 
-void load_idt(void) {
+void load_idt() {
 	asm("lidt %0" :: "m" (idt_descriptor));
 }
 
-void test_idt(void) {
+void test_idt() {
 	asm("int $60");
 	asm("int $90");
 }
