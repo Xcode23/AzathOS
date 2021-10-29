@@ -10,7 +10,7 @@
 
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
-static uint16_t* const VGA_MEMORY = reinterpret_cast<uint16_t*>(0xB8000);
+static uint16_t* const VGA_MEMORY = reinterpret_cast<uint16_t*>(0xC03FF000);
 
 static size_t terminal_row;
 static size_t terminal_column;
@@ -19,7 +19,7 @@ static uint16_t* terminal_buffer;
 
 void scroll();
 void enable_cursor(uint8_t cursor_start, uint8_t cursor_end);
-void disable_cursor();
+void inline disable_cursor();
 void update_cursor(size_t x, size_t y);
 void terminal_putchar(char c);
 void terminal_write(const char* data, size_t size);
@@ -101,7 +101,7 @@ void enable_cursor(uint8_t cursor_start, uint8_t cursor_end) {
 	outb(0x3D5, (inb(0x3D5) & 0xE0) | cursor_end);
 }
 
-void disable_cursor() {
+void inline disable_cursor() {
 	outb(0x3D4, 0x0A);
 	outb(0x3D5, 0x20);
 }

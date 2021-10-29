@@ -376,7 +376,7 @@ void setup_isr(uint8_t intr_num, uintptr_t handler) {
 	idt[intr_num].segment_offset_2 = handler >> 16;
 	idt[intr_num].zero = 0;
 	idt[intr_num].selector = 8; //code segment gdt offset
-	idt[intr_num].type_attr = 0b10001111; //TODO: improve
+	idt[intr_num].type_attr = 0b10001111; //bits 0-3 specify gate type, with all set for 32-bit trap-gate, 8th bit for present interrupt
 }
 
 void load_idt() {
