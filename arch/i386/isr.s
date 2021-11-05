@@ -36,3 +36,20 @@ isr_wrapper:
 %endif
 %assign i i+1
 %endrep
+
+global setup_idt
+setup_idt:
+    push ebp
+    mov ebp, esp
+    %assign i 0
+    %rep 256
+        sub esp, 16
+        mov [esp + 4], dword interrupt_handler_ %+ i
+        mov [esp], byte i ; add to stack(parameters) interrupt number
+        extern setup_isr
+        call setup_isr
+        add     esp, 16 ; remove from stack 1 byte from interrupt number and 4 for isr function pointer
+    %assign i i+1
+    %endrep
+    pop ebp
+    ret

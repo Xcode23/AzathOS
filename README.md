@@ -20,6 +20,7 @@ Hobby kernel made to learn how OS kernels are implemented.
 
 * move paging activation to c++
 * allocate page for multiboot info
+* refactor files/classes/namespaces/dependencies
 * add privilege level to exceptions and hardware interrupts
+* move keyboard driver logic out the interrupt handler
 * add documentation comments
-* move keyboard driver logic out the interrupt handler 
